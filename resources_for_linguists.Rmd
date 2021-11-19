@@ -1,6 +1,8 @@
 ---
 title: "R Notebook"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 # Step 0 - Operationalize your analysis 
@@ -45,8 +47,6 @@ data |>
 ```
 
 ```{r}
-
-pluc
 
 data |> 
     ggplot(aes(x = 1, y = F0, color = gender)) +
