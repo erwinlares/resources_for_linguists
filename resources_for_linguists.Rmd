@@ -1,0 +1,89 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Step 0 - Operationalize your analysis 
+This is where you make explicit what your measuring (accuracy ≠ precision) and what.
+
+The validity of the models is informed by theory, exisiting literature, intuition and observations.
+
+# Working with means
+Imagine that you're working with F0 measurements made with a population of speakers. 
+
+```{r}
+data <- read_csv("data/F0.csv")
+```
+# Is this valid data?
+
+```{r}
+
+data |> 
+    ggplot(aes(x = 1, y = F0)) +
+    geom_jitter()
+
+```
+
+
+```{r}
+
+data |> 
+    ggplot(aes(x = 1, y = F0, color = gender)) +
+    geom_jitter()
+    
+
+```
+
+```{r}
+
+data |> 
+    ggplot(aes(x = F0)) +
+    geom_density()
+
+```
+
+```{r}
+
+pluc
+
+data |> 
+    ggplot(aes(x = 1, y = F0, color = gender)) +
+    geom_jitter() +
+    geom_hline(color = "blue", yintercept = data |> filter(gender == "M") |> pull(F0) |> mean()) +
+    geom_hline(color = "red", yintercept = data |> filter(gender == "F") |> pull(F0) |> mean())
+```
+## Quantitative analysis 
+
+We have a good idea that the two populations have different F0s. How do we go about "proving" that is the case?
+
+A t test can be very useful when you are compating measurements in a populatio
+
+n. 
+```{r}
+vector_m <- data |> filter(gender == "M") |> pull(F0)
+vector_f <- data |> filter(gender == "F") |> pull(F0)
+
+
+t.test(vector_m, vector_f)
+
+```
+
+# Classification problem
+
+Here's the problem. I asked a bunch of people to judge whether a sentence they hear was meant to be interpreted as literal or idiomatic. How do they do?
+
+Here's why operationalizing is very important. 
+
+```{r}
+
+data <- read_csv("data/perception.csv")
+
+glimpse(data)
+
+data |> 
+    ggplot() +
+    geom_col(aes(x = n_success, y = expected), fill = "red", alpha = 0.25) +
+    geom_col(aes(x = n_success, y = observed), fill = "blue", alpha = 0.25)
+
+```
+
