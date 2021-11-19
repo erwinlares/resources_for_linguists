@@ -4,14 +4,16 @@ output: html_notebook
 ---
 
 # Step 0 - Operationalize your analysis 
-This is where you make explicit what your measuring (accuracy ≠ precision) and what.
+This is where you make explicit what your measuring (accuracy ≠ precision), what it represents and why it is valid.
 
-The validity of the models is informed by theory, exisiting literature, intuition and observations.
+The validity of the models is informed by theory, existing literature, intuition, and observations.
 
 # Working with means
 Imagine that you're working with F0 measurements made with a population of speakers. 
 
 ```{r}
+
+library(tidyverse)
 data <- read_csv("data/F0.csv")
 ```
 # Is this valid data?
@@ -23,7 +25,7 @@ data |>
     geom_jitter()
 
 ```
-
+Does this data tell you much about the population?
 
 ```{r}
 
@@ -56,9 +58,9 @@ data |>
 
 We have a good idea that the two populations have different F0s. How do we go about "proving" that is the case?
 
-A t test can be very useful when you are compating measurements in a populatio
+A t test can be very useful when you are comparing measurements of tendency in a population.
 
-n. 
+
 ```{r}
 vector_m <- data |> filter(gender == "M") |> pull(F0)
 vector_f <- data |> filter(gender == "F") |> pull(F0)
@@ -82,8 +84,16 @@ glimpse(data)
 
 data |> 
     ggplot() +
-    geom_col(aes(x = n_success, y = expected), fill = "red", alpha = 0.25) +
-    geom_col(aes(x = n_success, y = observed), fill = "blue", alpha = 0.25)
+    geom_col(aes(x = n_success, y = expected), fill = "goldenrod", alpha = 0.5) +
+    geom_col(aes(x = n_success, y = observed), fill = "forestgreen", alpha = 0.5)
+
+```
+
+How do we go about "proving" that the differences are sufficiently different?
+
+```{r}
+
+chisq.test(data$expected, data$observed)
 
 ```
 
